@@ -1,20 +1,37 @@
 
 import 'package:flutter/material.dart';
-class MovieItem extends StatelessWidget{
+
+
+class Movie {
 
   final String image;
   final String title;
   final String year;
   final String Type;
 
-  MovieItem({required this.image,required this.title,required this.year,required this.Type});
-  factory MovieItem.fromJson( Map<String ,dynamic> json) {
-    return MovieItem(
-     image: json["Poster"],
-      title:json["Title"],
-      year:json["Year"],
-      Type:json["Type"],
-    );}
+  Movie(
+      {required this.image, required this.title, required this.year, required this.Type});
+
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      image: json["Poster"],
+      title: json["Title"],
+      year: json["Year"],
+      Type: json["Type"],
+    );
+  }
+}
+
+
+
+
+
+class MovieItem extends StatelessWidget{
+
+  final  Movie;
+  MovieItem(
+      {required this.Movie});
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +41,7 @@ class MovieItem extends StatelessWidget{
       child: Card(
         child: Row(
           children: [
-            Image.network(image),
+            Image.network(Movie.image),
             Expanded(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
@@ -32,11 +49,11 @@ class MovieItem extends StatelessWidget{
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text(this.year.toString()),
+                      Text(Movie.title, style: TextStyle(fontWeight: FontWeight.bold),),
+                      Text(Movie.year.toString()),
                       Container(
                         alignment: Alignment.centerRight,
-                        child: Text(this.Type),
+                        child: Text(Movie.Type),
                       ),
                       Icon(Icons.add)
 

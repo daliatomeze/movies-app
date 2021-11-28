@@ -1,9 +1,10 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Movie.dart';
 import 'getData.dart';
+import 'HomePageDesign.dart';
+import 'DetailsPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,22 +18,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<List<MovieItem>> futureList;
+  late Future<List<Movie>> futureList;
   final searchMovies = TextEditingController();
-
+  bool first =false;
 
   @override
   void initState() {
     super.initState();
-     futureList = fetchMovies(searchMovies.toString());
+    futureList = fetchMovies(searchMovies.toString(),'s');
+
 
   }
-
 
   setList() {
     setState(() {
       print("text= "+searchMovies.text);
-      futureList = fetchMovies(searchMovies.text);
+      futureList = fetchMovies(searchMovies.text,'s');
+      first=true;
       searchMovies.text="";
     });
 
@@ -59,6 +61,7 @@ class _MyAppState extends State<MyApp> {
                   children: [
                     Row(
                       children: [
+
                         Expanded(
                           child: TextField(
                             decoration: const InputDecoration(
@@ -84,19 +87,25 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               Expanded(
-                child: FutureBuilder<List<MovieItem>>(
+                child: FutureBuilder<List<Movie>>(
                   future: futureList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<MovieItem> Movies = snapshot.data ?? [];
+                      List<Movie> Movies = snapshot.data ?? [];
                       return ListView.builder(
                         itemCount: Movies.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return MovieItem(
-                            image: Movies[index].image,
+                          return GestureDetector(
+                              onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => DetailsPage( Title :Movies[index].title), ));
+                          },
+                          child:MovieItem(
+                            Movie:Movie(image: Movies[index].image,
                             title: Movies[index].title,
                             year: Movies[index].year,
-                            Type: Movies[index].Type,
+                            Type: Movies[index].Type,),
+                          ),
                           );
                         },
                       );
@@ -113,9 +122,7 @@ class _MyAppState extends State<MyApp> {
                               color:  Colors.grey,
                                 size: 20,
                             ),
-                            Text("Search To show movies! ",
-                              style: TextStyle(color: Colors.grey,),
-                            ),
+                            HomePage(first : first),
                           ],
                           ),
                       );
