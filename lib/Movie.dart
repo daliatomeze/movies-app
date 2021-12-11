@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'database-provider.dart';
 
 
 class Movie {
@@ -7,66 +10,60 @@ class Movie {
   final String image;
   final String title;
   final String year;
-  final String Type;
+  final String type;
+  final String id;
+  String rating = "";
+  String plot = "";
+  String writer = "";
+  String director = "";
+  String actor = "";
+  String genre = "";
+  bool added = false;
 
   Movie(
-      {required this.image, required this.title, required this.year, required this.Type});
+      {required this.id,required this.image, required this.title, required this.year, required this.type, required this.plot, required this.rating, required this.actor, required this.director, required this.writer, required this.genre});
+
+  Movie.list(
+      {required this.id,required this.image, required this.title, required this.year, required this.type,});
 
   factory Movie.fromJson(Map<String, dynamic> json) {
-    return Movie(
-      image: json["Poster"],
+    return Movie.list(
+      id:json["imdbID"],
       title: json["Title"],
       year: json["Year"],
-      Type: json["Type"],
+      image: json["Poster"],
+      type: json["Type"],
+
     );
   }
-}
 
+  factory Movie.details(Map<String, dynamic> json) {
+    return Movie(
+      id:json["imdbID"],
+      title: json["Title"],
+      year: json["Year"],
+      image: json["Poster"],
+      type: json["Type"],
+      plot: json["Plot"],
+      rating: json["Rated"],
+      actor: json["Actors"],
+      writer: json["Writer"],
+      director: json["Director"],
+      genre: json['Genre'],
 
-
-
-
-class MovieItem extends StatelessWidget{
-
-  final  Movie;
-  MovieItem(
-      {required this.Movie});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(4),
-      height: 120,
-      child: Card(
-        child: Row(
-          children: [
-            Image.network(Movie.image),
-            Expanded(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(Movie.title, style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text(Movie.year.toString()),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(Movie.Type),
-                      ),
-                      Icon(Icons.add)
-
-                    ],
-                  ),
-                )
-            )
-          ],
-        ),
-      ),
     );
-
-
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'imdbID':this.id,
+      'Title': this.title,
+      'Year': this.year,
+      'Poster': this.image,
+      'Type': this.type,
+
+    };
+  }
+
 
 }

@@ -22,15 +22,15 @@ import 'dart:convert';
   }
 }
 
- Future<Movie> fetchMovie (String Title)async{
+ Future<Movie> fetchMovie (String title)async{
    final response = await http
-       .get(Uri.parse('https://www.omdbapi.com/?t=${Title}&apikey=17558978'));
-   print(response.body);
+       .get(Uri.parse('https://www.omdbapi.com/?t=$title&apikey=17558978'));
    print(response.statusCode);
    if (response.statusCode == 200) {
      final responseJson = jsonDecode(response.body) ;
-   Movie movie =Movie.fromJson(responseJson);
-  return  movie;}
+   Movie movie =Movie.details(responseJson);
+  return  movie;
+   }
 
    else {
      // If the server did not return a 200 OK response,
