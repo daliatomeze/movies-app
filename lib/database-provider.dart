@@ -97,14 +97,14 @@ class Databasemodules extends ChangeNotifier {
     notifyListeners();
   }
 // delete a specific movie using id
-  deleteMovie(int id) async {
+  deleteMovie(String id) async {
     final db = await database;
-    db!.delete("students", where: "id=?", whereArgs: [id]);
+    db!.delete("Movies", where: "imdbID=?", whereArgs: [id]);
     notifyListeners();
   }
 
 
-
+// boll function return if the movie exist in the watch list before
   Future<bool> movieExsist(String id) async {
     final db = await database;
     List<Map>maps= await db!.query("Movies",
@@ -119,9 +119,14 @@ else {
     }
   }
 
+
+
+  // return genre Lists
+
   getCategory()async{
    List<Movie> v = await movies;
    List<Movie>v2=[];
+
    for(int j=0;j<v.length;j++){
       Movie movie= await fetchMovie(v[j].title);
       v2.add(movie);
@@ -221,7 +226,28 @@ else {
      }
 
 
+
   }
+
+
+
+  //Searh List.
+  Future<List<Movie>> mySearch (String str) async{
+   List<Movie> searchList = [];
+    List<Movie> v = await movies;
+    for(int i=0;i<v.length;i++) {
+      Movie movie= await fetchMovie(v[i].title);
+      String s=movie.title+""+movie.genre+""+movie.year;
+      if (s.contains(str))
+        searchList.add(movie);
+
+    }
+
+    return searchList;
+  }
+
+
+
 
 
 }

@@ -4,7 +4,6 @@ import 'package:movie/watchList.dart';
 import 'package:provider/provider.dart';
 import 'Genre.dart';
 import 'Movie.dart';
-import 'SearchScreen.dart';
 import 'database-provider.dart';
 import 'getData.dart';
 import 'HomePageDesign.dart';
@@ -34,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    futureList = fetchMovies(searchMovies.toString(), 's');
+   futureList = fetchMovies(searchMovies.toString(), 's');
   }
 
 
@@ -121,6 +120,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 ),
+
                 Expanded(
                   child: FutureBuilder<List<Movie>>(
                     future: futureList,
@@ -226,7 +226,7 @@ class _MyAppState extends State<MyApp> {
                                                               Movies[index].id);
                                                           print("let add");
                                                         } else {
-                                                          print("add");
+                                                          value.deleteMovie( Movies[index].id);
                                                         }
                                                       },
                                                     );
@@ -251,7 +251,6 @@ class _MyAppState extends State<MyApp> {
                       } else if (snapshot.hasError) {
                         return HomePage(first: first);
                       }
-
                       // By default, show a loading spinner.
                       return const CircularProgressIndicator();
                     },
@@ -281,19 +280,19 @@ class _MyAppState extends State<MyApp> {
                     'Watch List',
                     style: TextStyle(color: Colors.black),
                   ),
-                  leading: Icon(Icons.smart_display_rounded),
+                  leading: Icon(Icons.smart_display_rounded ,color: Colors.redAccent),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => WatchList()));
+                        MaterialPageRoute(builder: (context) => WatchList(value.movies)));
                   },
                 ),
                 ListTile(
                   hoverColor: Colors.redAccent[700],
                   title: const Text(
                     'Genre Screen',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black,),
                   ),
-                  leading: Icon(Icons.smart_display_rounded),
+                  leading: Icon(Icons.category_outlined,color: Colors.green,),
                   onTap: () {
                     Navigator.push(context,
 
@@ -301,20 +300,7 @@ class _MyAppState extends State<MyApp> {
                     GenreScreen("Genre Screen",["Action","Comedy","Drama","Fantasy","Horror","Mystery","Romance","Thriller","adventure"],[value.Action,value.Comedy,value.Drama,value.Fantasy,value.Horror,value.Mystery,value.Romance,value.Thriller,value.Adventure])));
                   },
                 ),
-                ListTile(
-                  hoverColor: Colors.redAccent[700],
-                  title: const Text(
-                    'Search Screen',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  leading: Icon(Icons.smart_display_rounded),
-                  onTap: () {
-                    Navigator.push(context,
 
-                        MaterialPageRoute(builder: (context) =>
-                            searchScreen()));
-                  },
-                ),
               ],
             ),
           ),

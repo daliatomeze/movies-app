@@ -24,7 +24,7 @@ import 'dart:convert';
 
  Future<Movie> fetchMovie (String title)async{
    final response = await http
-       .get(Uri.parse('https://www.omdbapi.com/?t=$title&apikey=17558978'));
+       .get(Uri.parse('https://www.omdbapi.com/?t=$title&plot=short&apikey=17558978'));
    print(response.statusCode);
    if (response.statusCode == 200) {
      final responseJson = jsonDecode(response.body) ;
@@ -38,3 +38,20 @@ import 'dart:convert';
      throw Exception('Failed to load movie');
    }
  }
+
+ Future<Movie> fetchPlot (String title)async {
+  final response = await http
+      .get(Uri.parse('https://www.omdbapi.com/?t=$title&plot=full&apikey=17558978'));
+  print(response.statusCode);
+  if (response.statusCode == 200) {
+    final responseJson = jsonDecode(response.body);
+    Movie movie = Movie.details(responseJson);
+    return movie;
+  }
+
+  else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load movie');
+  }
+}
