@@ -1,11 +1,9 @@
  import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
  import 'package:liquid_swipe/liquid_swipe.dart';
 class HomePage extends StatelessWidget{
 
-  final bool first ;
-  HomePage({required  this.first});
+
 
 
   @override

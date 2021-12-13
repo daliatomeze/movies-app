@@ -45,7 +45,7 @@ class Movie {
       image: json["Poster"],
       type: json["Type"],
       plot: json["Plot"],
-      rating: json["Rated"],
+      rating: json["imdbRating"],
       actor: json["Actors"],
       writer: json["Writer"],
       director: json["Director"],

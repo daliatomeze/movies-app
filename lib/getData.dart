@@ -1,3 +1,8 @@
+
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'Exception.dart';
 import 'Movie.dart';
 import 'package:http/http.dart' as http ;
 import 'dart:convert';
@@ -8,14 +13,52 @@ import 'dart:convert';
   print(response.body);
   print(response.statusCode);
   if (response.statusCode == 200) {
-    final responseJson = jsonDecode(response.body) ;
-    Iterable list;
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['Response'] == 'False') {
 
-       list= responseJson["Search"] ;
-       return list.map((m) =>Movie.fromJson(m)).toList() ;}
+      try {
+        toomuch(responseJson["Error"]);
 
+      }
+     on TooMuch{
+        Fluttertoast.showToast(
+            msg: "Enter a movie name longer than 3 char please! ",
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+      try {
+        invalidName(responseJson["Error"]);
+      }
+      on InvalidName {
+        Fluttertoast.showToast(
+            msg: "invalid name",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.green,
+
+        );
+      }
+
+
+    }
+
+      Iterable list;
+      list = responseJson["Search"];
+      return list.map((m) => Movie.fromJson(m)).toList();
+
+  }
 
   else {
+
+    try {
+      backenderror(response.statusCode);
+    }
+
+    catch(e){
+      Fluttertoast.showToast(
+          msg: "$e",
+
+      );
+    }
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception('Failed to load movie');
@@ -33,6 +76,22 @@ import 'dart:convert';
    }
 
    else {
+
+     try {
+       backenderror(response.statusCode);
+     }
+
+     catch(e){
+       Fluttertoast.showToast(
+           msg: "$e",
+           toastLength: Toast.LENGTH_SHORT,
+           gravity: ToastGravity.CENTER,
+           timeInSecForIosWeb: 1,
+           backgroundColor: Colors.red,
+           textColor: Colors.white,
+           fontSize: 16.0
+       );
+     }
      // If the server did not return a 200 OK response,
      // then throw an exception.
      throw Exception('Failed to load movie');
@@ -49,7 +108,23 @@ import 'dart:convert';
     return movie;
   }
 
+
   else {
+    try {
+      backenderror(response.statusCode);
+    }
+
+    catch(e){
+      Fluttertoast.showToast(
+          msg: "$e",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+    }
     // If the server did not return a 200 OK response,
     // then throw an exception.
     throw Exception('Failed to load movie');

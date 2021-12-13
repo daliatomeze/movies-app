@@ -39,6 +39,7 @@ dependencies:
   favorite_button: ^0.0.4
   fluttertoast: ^8.0.8
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

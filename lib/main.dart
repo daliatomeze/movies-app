@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movie/watchList.dart';
 import 'package:provider/provider.dart';
 import 'Genre.dart';
@@ -9,6 +10,9 @@ import 'getData.dart';
 import 'HomePageDesign.dart';
 import 'DetailsPage.dart';
 import 'package:favorite_button/favorite_button.dart';
+import 'dart:io';
+
+
 
 
 void main() {
@@ -26,13 +30,37 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late Future<List<Movie>> futureList;
   final searchMovies = TextEditingController();
-  bool first = false;
+
+
+  // function to cheack internet
+Future<void> checkInternet() async {
+  try {
+    final result = await InternetAddress.lookup('google.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      print('connected');
+      Fluttertoast.showToast(
+        msg: "Connected ",
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
+    on SocketException catch (_) {
+    print('not connected');
+    Fluttertoast.showToast(
+      msg: "no Internet connection  ",
+      toastLength: Toast.LENGTH_LONG,
+    );
+  }
+}
+
 
 
 
   @override
   void initState() {
     super.initState();
+    checkInternet();
    futureList = fetchMovies(searchMovies.toString(), 's');
   }
 
@@ -42,7 +70,6 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       print("text= " + searchMovies.text);
       futureList = fetchMovies(searchMovies.text, 's');
-      first = true;
       searchMovies.text = "";
     });
   }
@@ -249,7 +276,7 @@ class _MyAppState extends State<MyApp> {
                           },
                         );
                       } else if (snapshot.hasError) {
-                        return HomePage(first: first);
+                        return HomePage();
                       }
                       // By default, show a loading spinner.
                       return const CircularProgressIndicator();
