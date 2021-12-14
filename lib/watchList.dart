@@ -119,7 +119,7 @@ class _WatchListState extends State<WatchList> {
                               height: 130,
                               child: Card(
                                 child: FutureBuilder<Movie>(
-                                  future: fetchMovie(Movies[index].title),
+                                  future: fetchMovie(Movies[index].title,"short"),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       Movie Mov = snapshot.data!;

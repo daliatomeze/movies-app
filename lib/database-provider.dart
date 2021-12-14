@@ -128,7 +128,7 @@ else {
    List<Movie>v2=[];
 
    for(int j=0;j<v.length;j++){
-      Movie movie= await fetchMovie(v[j].title);
+      Movie movie= await fetchMovie(v[j].title,"short");
       v2.add(movie);
    }
      for(int i=0;i<v2.length;i++){
@@ -236,7 +236,7 @@ else {
    List<Movie> searchList = [];
     List<Movie> v = await movies;
     for(int i=0;i<v.length;i++) {
-      Movie movie= await fetchMovie(v[i].title);
+      Movie movie= await fetchMovie(v[i].title,"short");
       String s=movie.title+""+movie.genre+""+movie.year+" " +movie.rating;
       if (s.contains(str))
         searchList.add(movie);

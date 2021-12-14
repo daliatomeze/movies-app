@@ -19,14 +19,14 @@ class _DetailsPageState extends State<DetailsPage> {
 
   //return movie with short plot
   Future<Movie> getData() {
-    movieList = fetchMovie(this.widget.Title);
+    movieList = fetchMovie(this.widget.Title,"short");
     return movieList;
   }
 
 //return movie with full plot
   getplot() {
     setState(() {
-      movies = fetchPlot(this.widget.Title);
+      movies = fetchMovie(this.widget.Title,"full");
     });
   }
 
